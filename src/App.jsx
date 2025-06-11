@@ -4,6 +4,10 @@ import { fetchCurrentUser } from './api/auth';
 import LoginPage from './pages/loginpage';
 import RegisterPage from  './apges/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import { ChakraBaseProvider } from '@chakra-ui/react'
+import './App.css'
+import { Title } from './Title'
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -24,7 +28,12 @@ function App() {
   }, []);
 
   if (loading) {
-    return<div>Loading...</div>;
+    return
+    <ChakraBaseProvider>
+
+     <div>Loading...</div>;
+     
+    </ChakraBaseProvider>
   }
 
   return (
