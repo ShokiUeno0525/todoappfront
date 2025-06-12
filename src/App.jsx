@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { fetchCurrentUser } from './api/auth';
-import LoginPage from './pages/loginpage';
-import RegisterPage from  './apges/RegisterPage';
+import LoginPage from './pages/loginPage';
+import RegisterPage from  './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import { ChakraBaseProvider } from '@chakra-ui/react'
 import './App.css'

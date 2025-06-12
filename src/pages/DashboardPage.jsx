@@ -1,5 +1,5 @@
 import TodoList from '../components/TodoList';
-import TodoForm from '../components/TodoForm';
+import TodoForm from '../components/TodoForm.jsx';
 
 export default function Dashboard() {
   return (
