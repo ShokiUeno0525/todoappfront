@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchTodos, deleteTodo, upddateTodo } from '../api/todos';
+import { fetchTodos, deleteTodo, updateTodo } from '../api/todos';
 
 export default function TodoList() {
     const [todos, setTodos] = useState([]);

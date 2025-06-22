@@ -1,4 +1,4 @@
-import TodoList from '../components/TodoList';
+import TaskList from '../components/TaskList.jsx';
 import TodoForm from '../components/TodoForm.jsx';
 
 export default function Dashboard() {
