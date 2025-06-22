@@ -1,38 +1,47 @@
 // src/api.js
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:8000/api';
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api',       // ← ベースURLを指定
+  headers: {
+    'Content-Type': 'application/json',       // デフォルトヘッダ
+  },
+});
 
-axios.defaults.headers.common['Content-Type'] = 'application/json';
+// 認証トークンをローカルストレージから読み込んで初期セット
 const token = localStorage.getItem('token');
-if (token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+if (token) {
+  API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
+export default API;
+
+/**　ログイン */
 export async function handleLogin(email, password) {
-  const { data } = await axios.post(
-    `${API_BASE}/login`,
-    { email, password }
-  );
+  const { data } = await API.post('/login', {email, password });
   localStorage.setItem('token', data.token);
-  axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+  API.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
   return data;
 }
 
+/** 新規登録 */
 export async function handleRegister(name, email, password, password_confirmation) {
-  const { data } = await axios.post(
-    `${API_BASE}/register`,
-    { name, email, password, password_confirmation }
-  );
+  const { data } = await API.post('/register', {
+    name, email, password, password_confirmation
+  });
   return data;
 }
 
+/** ログアウト */
 export async function handleLogout() {
-  const { data } = await axios.post(`${API_BASE}/logout`);
+  const { data } = await API.post(`/logout`);
   localStorage.removeItem('token');
   delete axios.defaults.headers.common['Authorization'];
   return data;
 }
 
+/** 現在のログインユーザー情報取得 */
 export async function fetchCurrentUser() {
-  const { data } = await axios.get(`${API_BASE}/user`);
+  const { data } = await API.get(`/user`);
   return data;
 }
