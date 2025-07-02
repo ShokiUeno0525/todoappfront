@@ -2,7 +2,8 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api',       // ← ベースURLを指定
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api',
+  withCredentials: true,  // ← クッキーを含める
   headers: {
     'Content-Type': 'application/json',       // デフォルトヘッダ
   },
@@ -34,7 +35,7 @@ export async function handleRegister(name, email, password, password_confirmatio
 
 /** ログアウト */
 export async function handleLogout() {
-  const { data } = await API.post(`/logout`);
+  const { data } = await API.post('/logout');
   localStorage.removeItem('token');
   delete axios.defaults.headers.common['Authorization'];
   return data;
@@ -42,6 +43,6 @@ export async function handleLogout() {
 
 /** 現在のログインユーザー情報取得 */
 export async function fetchCurrentUser() {
-  const { data } = await API.get(`/user`);
+  const { data } = await API.get('/user');
   return data;
 }
