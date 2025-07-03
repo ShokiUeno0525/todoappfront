@@ -15,7 +15,7 @@ if (token) {
 // ログイン → トークン取得＆保存
 export async function handleLogin(email, password) {
   const { data } = await axios.post(
-    `${API_BASE}/api/login`,
+    `${API_BASE}/login`,
     { email, password }
   );
   // data.token にアクセストークンが入っている想定
@@ -27,7 +27,7 @@ export async function handleLogin(email, password) {
 // ユーザー登録
 export async function handleRegister(name, email, password, password_confirmation) {
   const { data } = await axios.post(
-    `${API_BASE}/api/register`,
+    `${API_BASE}/register`,
     { name, email, password, password_confirmation }
   );
   return data;
@@ -36,7 +36,7 @@ export async function handleRegister(name, email, password, password_confirmatio
 // ログアウト → トークン削除＆ヘッダークリア
 export async function handleLogout() {
   const { data } = await axios.post(
-    `${API_BASE}/api/logout`
+    `${API_BASE}/logout`
   );
   localStorage.removeItem('token');
   delete axios.defaults.headers.common['Authorization'];
@@ -46,7 +46,7 @@ export async function handleLogout() {
 // 現在のユーザー情報取得
 export async function fetchCurrentUser() {
   const { data } = await axios.get(
-    `${API_BASE}/api/user`
+    `${API_BASE}/user`
   );
   return data;
 }

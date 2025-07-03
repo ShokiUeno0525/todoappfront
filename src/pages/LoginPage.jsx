@@ -1,12 +1,10 @@
 // src/pages/LoginPage.jsx
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../api/api'; // baseURL と withCredentials を設定済みとする
+import API from '../api/api'; // baseURL と withCredentials を設定済みとする
 
-export default function LoginPage() {
+export default function LoginPage({ setUser }) {
   const navigate = useNavigate();
-
   const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
   const [error,    setError]    = useState(null);
@@ -18,15 +16,15 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await axios.post('/login', { email, password });
+      const res = await API.post('/login', { email, password });
       const token = res.data.token;
 
       // 1) トークンを localStorage に保存
-      localStorage.setItem('apiToken', token);
+      localStorage.setItem('token', token);
 
-      // 2) axios の Authorization ヘッダをデフォルト設定
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
+      // 2) API の Authorization ヘッダをデフォルト設定
+      API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setUser(true)
       // 3) ログイン後はタスク一覧へリダイレクト
       navigate('/todos');
     } catch (e) {

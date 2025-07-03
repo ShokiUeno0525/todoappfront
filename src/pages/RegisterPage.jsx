@@ -58,7 +58,7 @@ export default function RegisterPage({ setUser }) {
         </div>
         <div>
           <label>パスワード確認</label>
-          <input type="passwordConfirmation" value={passwordConfirmatin} onChange={e => setPasswordConfirmation(e.target.value)}
+          <input type="passwordConfirmation" value={passwordConfirmation} onChange={e => setPasswordConfirmation(e.target.value)}
                  required className="w-full border px-2 py-1 rounded" />
         </div>
         <button type="submit" disabled={loading}

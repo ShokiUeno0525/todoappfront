@@ -1,5 +1,6 @@
+
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
 import { fetchCurrentUser } from './api/auth';
 import LoginPage from './pages/LoginPage';
 import TodoPage from './pages/TodoPage';
@@ -7,7 +8,6 @@ import RegisterPage from  './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import { ChakraBaseProvider } from '@chakra-ui/react'
 import './App.css'
-import { Title } from './Title'
 
 
 function App() {
@@ -62,10 +62,6 @@ function App() {
        path="/register"
        element={!user ? <RegisterPage setUser={setUser} /> : <Navigate to="/dashboard" replace />}
        />
-      <Route
-       path="/register"
-       element={!user ? <RegisterPage setUser={setUser} /> : <Navigate to="/dashboard" replace />}
-        />
 
       {/* ログイン必須ルート　*/}
       <Route
