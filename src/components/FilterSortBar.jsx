@@ -33,7 +33,7 @@ export default function FilterSortBar({
             <select
             value={sortOrder}
             onChange={e => onSortOrderChange(e.target.value)}
-            classname="border px-2 py-1 rounded"
+            className="border px-2 py-1 rounded"
             >
                 <option value="asc">昇順</option>
                 <option value="desc">降順</option>

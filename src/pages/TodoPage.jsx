@@ -1,7 +1,7 @@
 // src/pages/TodoPage.jsx
 
 import { useState, useEffect } from 'react';
-import axios from '../api/api';            // axios の baseURL / withCredentials を設定したユーティリティ
+import API from '../api/api';            // axios の baseURL / withCredentials を設定したユーティリティ
 import FilterSortBar from '../components/FilterSortBar';
 import TaskList       from '../components/TaskList';
 import NewTaskButton  from '../components/NewTaskButton';
@@ -30,7 +30,7 @@ export default function TodoPage() {
         sort_by: sortKey,
         order:   sortOrder,
       };
-      const res = await axios.get('/api/todos', { params });
+      const res = await API.get('/todos', { params });
       setTasks(res.data);
     } catch (e) {
       console.error(e);
