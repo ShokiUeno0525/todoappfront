@@ -29,11 +29,15 @@ export default function LoginPage({ setUser }) {
       navigate('/todos');
     } catch (e) {
       console.error(e);
-      setError(
-        e.response?.status === 401
-          ? 'メールアドレスかパスワードが正しくありません'
-          : 'ログインに失敗しました'
-      );
+      if (e.code === 'ERR_NETWORK' || e.message === 'Network Error') {
+        setError('サーバーに接続できません。サーバーが起動していることを確認してください。');
+      } else {
+        setError(
+          e.response?.status === 401
+            ? 'メールアドレスかパスワードが正しくありません'
+            : 'ログインに失敗しました'
+        );
+      }
     } finally {
       setLoading(false);
     }

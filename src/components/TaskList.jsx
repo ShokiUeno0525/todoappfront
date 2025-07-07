@@ -32,7 +32,7 @@ export default function TodoList() {
         <li key={todo.id}>
           <input
             type="checkbox"
-            checked={todo.is_competed}
+            checked={todo.is_completed}
             onChange={() => handleToggleComplete(todo)}
           />
           {todo.title} ({new Date(todo.due_date).toLocaleDateString()})
