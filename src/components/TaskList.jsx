@@ -1,16 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { fetchTodos, deleteTodo, updateTodo } from "../api/todos";
 
-export default function TodoList() {
+const TodoList = forwardRef((props, ref) => {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const loadTodos = () => {
+    setLoading(true);
     fetchTodos()
       .then((res) => setTodos(res.data))
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadTodos();
   }, []);
+
+  useImperativeHandle(ref, () => ({
+    refreshTasks: loadTodos
+  }));
 
   const handleToggleComplete = (todo) => {
     updateTodo(todo.id, { is_completed: !todo.is_completed }).then((res) => {
@@ -41,4 +50,6 @@ export default function TodoList() {
       ))}
     </ul>
   );
-}
+});
+
+export default TodoList;

@@ -1,12 +1,4 @@
-import axios from 'axios';
-
-const API = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL,
-    headers: { 'Content-Type': 'application/json' },
-    //viteの環境変数でhttp://localhost:8000 などを指定しておくと便利
-});
-
-export default API;
+import API from './api.js';
 
 /** タスク一覧取得 */
 export function fetchTodos(){
@@ -19,7 +11,7 @@ export function createTodo({ title, description, due_date }){
 }
 
 /** タスク更新 */
-export function updateTodo(id) {
+export function updateTodo(id, payload) {
     return API.patch(`/todos/${id}`, payload);
 }
 
