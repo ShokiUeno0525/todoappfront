@@ -6,11 +6,6 @@ export default function NewTaskButton({ onCreated }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const handleCreated = () => {
-    alert("作成に成功しました");
-    // 必要ならここでリストの再取得や状態更新も
-  };
-
   const submit = async () => {
     try {
       await axios.post("/todos", {
@@ -18,7 +13,8 @@ export default function NewTaskButton({ onCreated }) {
         description,
         due_date: dueDate,
       });
-      onCreated(handleCreated());
+      alert("作成に成功しました");
+      onCreated();
       setShowForm(false);
       setTitle("");
       setDescription("");
