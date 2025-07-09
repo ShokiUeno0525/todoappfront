@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import TodoPage from './pages/TodoPage';
 import RegisterPage from  './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import { ChakraBaseProvider } from '@chakra-ui/react'
 import './App.css'
 
@@ -62,11 +64,19 @@ function App() {
        path="/register"
        element={!user ? <RegisterPage setUser={setUser} /> : <Navigate to="/dashboard" replace />}
        />
+      <Route
+       path="/forgot-password"
+       element={!user ? <ForgotPasswordPage /> : <Navigate to="/dashboard" replace />}
+       />
+      <Route
+       path="/reset-password"
+       element={!user ? <ResetPasswordPage /> : <Navigate to="/dashboard" replace />}
+       />
 
       {/* ログイン必須ルート　*/}
       <Route
        path="/dashboard"
-       element={user ? <DashboardPage user={user} /> : <Navigate to="/login" replace />}
+       element={user ? <DashboardPage user={user} setUser={setUser} /> : <Navigate to="/login" replace />}
        />
        <Route
        path="/todos"
