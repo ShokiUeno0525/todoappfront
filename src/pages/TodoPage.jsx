@@ -1,6 +1,6 @@
 // src/pages/TodoPage.jsx
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import API from '../api/api';            // axios の baseURL / withCredentials を設定したユーティリティ
 import FilterSortBar from '../components/FilterSortBar';
 import TaskList       from '../components/TaskList';
@@ -21,7 +21,7 @@ export default function TodoPage() {
   const [error, setError]             = useState(null);
 
   // API からタスク一覧を取得
-  const fetchTodos = async () => {
+  const fetchTodos = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -38,12 +38,12 @@ export default function TodoPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterStatus, sortKey, sortOrder]);
 
   // マウント時とフィルタ／ソート変更時に再取得
   useEffect(() => {
     fetchTodos();
-  }, [filterStatus, sortKey, sortOrder]);
+  }, [fetchTodos]);
 
   // 新規作成後にリストを更新するコールバック
   const handleCreated = (newTask) => {

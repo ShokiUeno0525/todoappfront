@@ -27,11 +27,11 @@ function App() {
       setLoading(false);
       return;
      }
-      //トークンがある場合だけ　/api/userを呼び出し
+      //トークンがある場合だけ /api/userを呼び出し
       try{
         const data = await fetchCurrentUser();
         setUser(data);
-     } catch (e) {
+     } catch {
       setUser(null);
      } finally {
       setLoading(false);
@@ -53,7 +53,7 @@ function App() {
    <ChakraBaseProvider>
      <Routes>
 
-      {/* ルートパスに来たらログインに飛ばす　*/}
+      {/* ルートパスに来たらログインに飛ばす */}
       <Route path="/" element={<Navigate to="/login" replace />} />
 
       <Route
@@ -62,7 +62,7 @@ function App() {
        />
       <Route
        path="/register"
-       element={!user ? <RegisterPage setUser={setUser} /> : <Navigate to="/dashboard" replace />}
+       element={!user ? <RegisterPage /> : <Navigate to="/dashboard" replace />}
        />
       <Route
        path="/forgot-password"
@@ -73,7 +73,7 @@ function App() {
        element={!user ? <ResetPasswordPage /> : <Navigate to="/dashboard" replace />}
        />
 
-      {/* ログイン必須ルート　*/}
+      {/* ログイン必須ルート */}
       <Route
        path="/dashboard"
        element={user ? <DashboardPage user={user} setUser={setUser} /> : <Navigate to="/login" replace />}
