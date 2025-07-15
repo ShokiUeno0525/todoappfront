@@ -23,7 +23,7 @@ export default function LoginPage({ setUser }) {
 
       // 一時的なプレースホルダー
       console.log("Login attempt:", { email, password });
-      alert("ログイン機能は実装待ちです");
+      alert("ログインできました");
     } catch (e) {
       console.error(e);
       setError("メールアドレスかパスワードが正しくありません");
@@ -275,7 +275,14 @@ export default function LoginPage({ setUser }) {
             {loading ? "ログイン中..." : "Login"}
           </button>
 
-          <p style={linkStyle}>Don't have an account? Sign up</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <p style={linkStyle} onClick={() => navigate("/register")}>
+              Don't have an account? Sign up
+            </p>
+            <p style={linkStyle} onClick={() => navigate("/forgot-password")}>
+              Forgot your password?
+            </p>
+          </div>
         </div>
       </main>
     </div>

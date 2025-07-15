@@ -1,31 +1,29 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-// import { handleRegister } from '../api/auth';
-import API from '../api/api';
-
-export default function RegisterPage() {
-  const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import API from "../api/api"; // APIのインポートパスを適宜変更してください
+export default function RegisterPage({ navigate }) {
+  const navigateHook = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async e => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setError(null);
     setLoading(true);
 
     // パスワードの一致確認
     if (password !== passwordConfirmation) {
-      setError('パスワードが一致しません');
+      setError("パスワードが一致しません");
       setLoading(false);
       return;
     }
 
     try {
-      await API.post('/register', {
+      // 実際のAPIコール
+      await API.post("/register", {
         name,
         email,
         password,
@@ -33,16 +31,23 @@ export default function RegisterPage() {
       });
 
       // 登録成功後、ログイン画面に遷移
-      navigate('/login');
+      if (navigate) {
+        navigate("/login");
+      } else {
+        // navigateが渡されていない場合の代替処理
+        alert("登録が完了しました。ログインページに移動してください。");
+      }
     } catch (e) {
       console.error(e);
-      if (e.code === 'ERR_NETWORK' || e.message === 'Network Error') {
-        setError('サーバーに接続できません。サーバーが起動していることを確認してください。');
+      if (e.code === "ERR_NETWORK" || e.message === "Network Error") {
+        setError(
+          "サーバーに接続できません。サーバーが起動していることを確認してください。"
+        );
       } else {
         setError(
           e.response?.status === 422
-            ? 'このメールアドレスは既に使用されています'
-            : '登録に失敗しました'
+            ? "このメールアドレスは既に使用されています"
+            : "登録に失敗しました"
         );
       }
     } finally {
@@ -50,146 +55,292 @@ export default function RegisterPage() {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
+  // 強制的にスタイルを適用するため、!important を使用
+  const containerStyle = {
+    minHeight: "100vh",
+    backgroundColor: "#f9fafb",
+    fontFamily: '"Inter", "Segoe UI", "Roboto", sans-serif',
+    display: "flex",
+    flexDirection: "column",
+    margin: "0",
+    padding: "0",
+    boxSizing: "border-box",
+    width: "100%",
+    position: "relative",
+    zIndex: "1000",
+  };
+
+  const headerStyle = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "16px 24px",
+    borderBottom: "1px solid #e5e7eb",
+    backgroundColor: "#ffffff",
+    boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+    position: "relative",
+    zIndex: "1001",
+  };
+
+  const logoStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    color: "#111827",
+    textDecoration: "none",
+  };
+
+  const titleStyle = {
+    fontSize: "20px",
+    fontWeight: "700",
+    margin: "0",
+    color: "#111827",
+    lineHeight: "1.2",
+  };
+
+  const mainStyle = {
+    flex: "1",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "24px",
+    position: "relative",
+    zIndex: "1001",
+  };
+
+  const cardStyle = {
+    width: "100%",
+    maxWidth: "420px",
+    backgroundColor: "#ffffff",
+    padding: "48px 32px",
+    borderRadius: "12px",
+    boxShadow:
+      "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+    border: "1px solid #f3f4f6",
+  };
+
+  const welcomeStyle = {
+    fontSize: "32px",
+    fontWeight: "800",
+    textAlign: "center",
+    marginBottom: "32px",
+    color: "#111827",
+    lineHeight: "1.2",
+  };
+
+  const fieldStyle = {
+    marginBottom: "24px",
+  };
+
+  const labelStyle = {
+    display: "block",
+    fontSize: "16px",
+    fontWeight: "600",
+    marginBottom: "8px",
+    color: "#374151",
+  };
+
+  const inputStyle = {
+    width: "100%",
+    height: "52px",
+    padding: "0 16px",
+    border: "2px solid #d1d5db",
+    borderRadius: "8px",
+    fontSize: "16px",
+    backgroundColor: "#ffffff",
+    boxSizing: "border-box",
+    transition: "border-color 0.2s, box-shadow 0.2s",
+    outline: "none",
+    color: "#111827",
+  };
+
+  const buttonStyle = {
+    width: "100%",
+    height: "52px",
+    backgroundColor: "#111827",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "16px",
+    fontWeight: "700",
+    cursor: loading ? "not-allowed" : "pointer",
+    opacity: loading ? "0.6" : "1",
+    marginBottom: "24px",
+    transition: "background-color 0.2s, opacity 0.2s",
+    outline: "none",
+  };
+
+  const linkStyle = {
+    textAlign: "center",
+    fontSize: "14px",
+    color: "#6b7280",
+    textDecoration: "underline",
+    cursor: "pointer",
+    margin: "0",
+    display: "block",
+  };
+
+  const errorStyle = {
+    padding: "16px",
+    backgroundColor: "#fef2f2",
+    border: "1px solid #fecaca",
+    borderRadius: "8px",
+    marginBottom: "24px",
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
-        <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">新規登録</h1>
-          <p className="text-gray-600">アカウントを作成してください</p>
+    <div style={containerStyle}>
+      <header style={headerStyle}>
+        <div style={logoStyle}>
+          <svg width="28" height="28" viewBox="0 0 48 48" fill="none">
+            <path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" fill="#111827" />
+          </svg>
+          <h1 style={titleStyle}>TaskMaster</h1>
         </div>
+      </header>
 
-        {error && (
-          <div className="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-xl p-4 mb-6">
-            <div className="flex items-start">
-              <div className="w-5 h-5 bg-red-100 rounded-full flex items-center justify-center mt-0.5 mr-3">
-                <svg className="w-3 h-3 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <p className="text-red-800 font-medium">{error}</p>
-            </div>
-          </div>
-        )}
+      <main style={mainStyle}>
+        <div style={cardStyle}>
+          <h2 style={welcomeStyle}>Create Account</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              名前
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
-              <input
-                type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                required
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                placeholder="あなたの名前"
-              />
+          {error && (
+            <div style={errorStyle}>
+              <p
+                style={{
+                  color: "#dc2626",
+                  fontSize: "14px",
+                  margin: "0",
+                  fontWeight: "500",
+                }}
+              >
+                {error}
+              </p>
             </div>
-          </div>
+          )}
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              メールアドレス
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                placeholder="example@example.com"
-              />
-            </div>
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Name</label>
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyPress={handleKeyPress}
+              disabled={loading}
+              style={{
+                ...inputStyle,
+                borderColor: "#d1d5db",
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = "#3b82f6";
+                e.target.style.boxShadow = "0 0 0 3px rgba(59, 130, 246, 0.1)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#d1d5db";
+                e.target.style.boxShadow = "none";
+              }}
+            />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              パスワード
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                placeholder="パスワードを入力してください"
-              />
-            </div>
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Email</label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyPress={handleKeyPress}
+              disabled={loading}
+              style={{
+                ...inputStyle,
+                borderColor: "#d1d5db",
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = "#3b82f6";
+                e.target.style.boxShadow = "0 0 0 3px rgba(59, 130, 246, 0.1)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#d1d5db";
+                e.target.style.boxShadow = "none";
+              }}
+            />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              パスワード確認
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <input
-                type="password"
-                value={passwordConfirmation}
-                onChange={e => setPasswordConfirmation(e.target.value)}
-                required
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                placeholder="パスワードを再度入力してください"
-              />
-            </div>
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={handleKeyPress}
+              disabled={loading}
+              style={{
+                ...inputStyle,
+                borderColor: "#d1d5db",
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = "#3b82f6";
+                e.target.style.boxShadow = "0 0 0 3px rgba(59, 130, 246, 0.1)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#d1d5db";
+                e.target.style.boxShadow = "none";
+              }}
+            />
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Confirm Password</label>
+            <input
+              type="password"
+              placeholder="Confirm your password"
+              value={passwordConfirmation}
+              onChange={(e) => setPasswordConfirmation(e.target.value)}
+              onKeyPress={handleKeyPress}
+              disabled={loading}
+              style={{
+                ...inputStyle,
+                borderColor: "#d1d5db",
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = "#3b82f6";
+                e.target.style.boxShadow = "0 0 0 3px rgba(59, 130, 246, 0.1)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#d1d5db";
+                e.target.style.boxShadow = "none";
+              }}
+            />
           </div>
 
           <button
-            type="submit"
+            onClick={handleSubmit}
             disabled={loading}
-            className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-3 px-4 rounded-xl font-medium hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            style={buttonStyle}
+            onMouseOver={(e) => {
+              if (!loading) {
+                e.target.style.backgroundColor = "#1f2937";
+              }
+            }}
+            onMouseOut={(e) => {
+              if (!loading) {
+                e.target.style.backgroundColor = "#111827";
+              }
+            }}
           >
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                登録中…
-              </div>
-            ) : (
-              'アカウントを作成'
-            )}
+            {loading ? "登録中..." : "Create Account"}
           </button>
-        </form>
-        
-        <div className="mt-6 text-center">
-          <span className="text-gray-600">既にアカウントをお持ちの方は</span>
-          <button
-            onClick={() => navigate('/login')}
-            className="text-blue-600 hover:text-blue-800 font-medium ml-1 transition-colors duration-200 hover:underline"
-          >
-            ログイン
-          </button>
+
+          <p style={linkStyle} onClick={() => navigateHook("/login")}>Already have an account? Sign in</p>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
